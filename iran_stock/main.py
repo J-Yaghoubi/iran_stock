@@ -1,10 +1,11 @@
 
-from historical import History
-from fundamental import Fundamental
-from datatable import Symbol_OBJ
-from datatable import Database
-from tools import to_persian
-import exceptions
+from iran_stock.historical import History
+from iran_stock.fundamental import Fundamental
+from iran_stock.datatable import Symbol_OBJ
+from iran_stock.datatable import Database
+from iran_stock.tools import to_persian
+from iran_stock.exceptions import InvalidFormat
+
 
 """
     Get historical price for one ticker or list of tickers
@@ -25,7 +26,7 @@ def get(ticker, start='1980-01-01', end='2090-01-01'):
 
     # Wrong format
     else:
-        raise exceptions.InvalidFormat()
+        raise InvalidFormat()
 
 """
     Get fundamenthal values for one ticker or list of tickers
@@ -46,7 +47,7 @@ def fund(ticker):
 
     # Wrong format
     else:
-        raise exceptions.InvalidFormat()
+        raise InvalidFormat()
 
 """
     Update the database that holds the list of all available stocks

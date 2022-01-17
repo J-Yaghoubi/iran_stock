@@ -1,7 +1,10 @@
-import const
-import exceptions
-from tools import to_persian
-from tools import connect
+
+from iran_stock.tools import to_persian
+from iran_stock.tools import connect
+from iran_stock.exceptions import ConnectionError
+from iran_stock.exceptions import TseError
+from iran_stock.const import SYMBOLS_TABLE
+
 import os
 import re
 import pickle
@@ -9,7 +12,6 @@ from dataclasses import dataclass
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
-
 
 """
     In this project, we have a pickle file that rules as a database. 
@@ -24,16 +26,28 @@ class Symbol_OBJ:
     en_ticker : str
     pr_ticker : str
 
-
 class Database:
-    def __init__(self, file_name = 'db.pickle'):
-        self.file_name = file_name
+    def __init__(self):
+        self.database_patch = os.path.dirname(os.path.realpath(__file__)) + os.sep + 'database' + os.sep + 'db.pickle'
+    
+    # read Database if exists    
 
-    # read Database    
+    def read_if_exists(self):
+        with open(self.database_patch, 'rb') as f:
+            data = pickle.load(f)  
+        return data  
+
+    # read Database. 
+    # If it is not exists then grab data from tsetmc and make a database then read it    
 
     def read(self):
-        with open(self.file_name, 'rb') as f:
-            return pickle.load(f) 
+        try:
+            data = self.read_if_exists()
+        except:
+            self.update()
+            data = self.read_if_exists()
+       
+        return data    
 
     # update Database   
 
@@ -42,14 +56,13 @@ class Database:
         # Check for internet connection
 
         if not connect():
-            raise exceptions.ConnectionError() 
+            raise ConnectionError() 
 
         try:
-
             # Grabbing data
 
-            print('Update started...')
-            url = const.SYMBOLS_TABLE
+            print('Database updating...')
+            url = SYMBOLS_TABLE
             result = requests.get(url).text
             soup = BeautifulSoup(result, 'html.parser')
             table = soup.find('table', {'class': 'table1'})
@@ -70,13 +83,13 @@ class Database:
 
             # Save data to the file(database)
 
-            with open(self.file_name, "wb") as f:
+            with open(self.database_patch, "wb") as f:
                 pickle.dump(tickers_list, f)  
 
             print('Database has been updated successfully...')     
 
         except:
-            raise exceptions.TseError()         
+            raise TseError()         
 
 
     # Search database for ticker-name and id
@@ -108,3 +121,9 @@ class Database:
         
         df = pd.DataFrame(data=row, columns=['ID', 'English Ticker', 'Persian Ticker'])
         return  df     
+
+
+
+
+
+

@@ -1,9 +1,12 @@
 
-from datatable import Symbol_OBJ
-from datatable import Database
-from tools import connect
-import exceptions
-import const
+from iran_stock.tools import connect
+from iran_stock.datatable import Symbol_OBJ
+from iran_stock.datatable import Database
+from iran_stock.exceptions import ConnectionError
+from iran_stock.exceptions import InvalidTicker
+from iran_stock.exceptions import TseError
+from iran_stock.const import SYMBOLS_PAGE
+
 import re
 import requests
 from dataclasses import dataclass
@@ -32,7 +35,7 @@ class Fundamental:
         # Check for internet connection
 
         if not connect():
-            raise exceptions.ConnectionError() 
+            raise ConnectionError() 
 
         # Search for ID and English_ticker in database
             
@@ -41,13 +44,13 @@ class Fundamental:
         # If returned value of search is empty then raise exception
 
         if id == '' or en_ticker == '':
-            raise exceptions.InvalidTicker(ticker)
+            raise InvalidTicker(ticker)
 
         # else, read the Tsetmc.com ticker page and return fundamental parameters
            
         else:
             try:
-                url = const.SYMBOLS_PAGE + id 
+                url = SYMBOLS_PAGE + id 
                 response = requests.get(url).text 
 
                 print('hello')
@@ -66,7 +69,7 @@ class Fundamental:
                 nav = re.findall("NAV='(.*?)'", response)[0]   
 
             except:
-                raise exceptions.TseError()    
+                raise TseError()    
 
         return Fundamental(title, group, evg_volume, eps, pe, sector_pe, base_volume, shares, nav) 
 
