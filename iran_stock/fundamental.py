@@ -53,8 +53,6 @@ class Fundamental:
                 url = SYMBOLS_PAGE + id 
                 response = requests.get(url).text 
 
-                print('hello')
-
                 title = re.findall("Title='(.*?)'", response)[0] 
                 group = re.findall("LSecVal='(.*?)'", response)[0] 
                 evg_volume = re.findall("QTotTran5JAvg='(.*?)'", response)[0] 
