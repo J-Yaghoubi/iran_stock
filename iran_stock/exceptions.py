@@ -19,4 +19,4 @@ class ConnectionError(Exception):
 class TseError(Exception):
     def __init__(self):
         super().__init__(f'Somethings goes wrong...\n'
-                          'We failed to access tsetms.com data. Please try again later...')            
+                          'We failed to access tsetmc.com data. Please try again later...')            

@@ -6,31 +6,23 @@ from iran_stock.exceptions import ConnectionError
 from iran_stock.exceptions import InvalidTicker
 from iran_stock.exceptions import TseError
 from iran_stock.const import SYMBOLS_PAGE
+from iran_stock.const import FUNDAMENTHAL_COLUMNS_NAME
 
 import re
+import pandas as pd
 import requests
-from dataclasses import dataclass
-
 
 """
     Download fundamental values of given ticker from tsetmc.com and 
-    return as Object
+    return as Dataframe
 """
 
+class Fundamental:  
 
-@dataclass
-class Fundamental:    
-    title : str 
-    group : str
-    evg_volume : int     
-    eps : float      
-    pe : float
-    sector_pe : float
-    base_volume : int
-    shares : int
-    nav : float
+    def __init__(self, ticker):
+        self.ticker = ticker
 
-    def download_fund(ticker):
+    def download_fund(self):
 
         # Check for internet connection
 
@@ -39,12 +31,12 @@ class Fundamental:
 
         # Search for ID and English_ticker in database
             
-        id, en_ticker = Database().search(ticker) 
+        id, en_ticker = Database().search(self.ticker) 
 
         # If returned value of search is empty then raise exception
 
         if id == '' or en_ticker == '':
-            raise InvalidTicker(ticker)
+            raise InvalidTicker(self.ticker)
 
         # else, read the Tsetmc.com ticker page and return fundamental parameters
            
@@ -53,8 +45,9 @@ class Fundamental:
                 url = SYMBOLS_PAGE + id 
                 response = requests.get(url).text 
 
+                ticker = re.findall("LVal18AFC='(.*?)'", response)[0] 
                 title = re.findall("Title='(.*?)'", response)[0] 
-                group = re.findall("LSecVal='(.*?)'", response)[0] 
+                sector = re.findall("LSecVal='(.*?)'", response)[0] 
                 evg_volume = re.findall("QTotTran5JAvg='(.*?)'", response)[0] 
                 eps = re.findall("EstimatedEPS='(.*?)'", response)[0] 
                 if eps != '':
@@ -65,11 +58,15 @@ class Fundamental:
                 base_volume = re.findall("BaseVol=(.*?),", response)[0] 
                 shares = re.findall("ZTitad=(.*?),", response)[0]                    
                 nav = re.findall("NAV='(.*?)'", response)[0]   
-
             except:
                 raise TseError()    
 
-        return Fundamental(title, group, evg_volume, eps, pe, sector_pe, base_volume, shares, nav) 
+        # return fundamental data as dataframe        
+
+        fundamenthal_data = [[ticker, title, sector, evg_volume, eps, pe, sector_pe, base_volume, shares, nav]]
+        df = pd.DataFrame(data=fundamenthal_data, columns= FUNDAMENTHAL_COLUMNS_NAME)
+       
+        return  df.to_string(index = False)      
 
  
 

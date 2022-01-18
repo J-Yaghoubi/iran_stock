@@ -36,13 +36,13 @@ def fund(ticker):
 
     # String
     if isinstance(ticker, str):
-       return  Fundamental.download_fund(to_persian(ticker))
+       return  Fundamental(to_persian(ticker)).download_fund()
 
     # List
     elif isinstance(ticker, list):
         tickers_data = []
         for i in range(len(ticker)):
-           tickers_data.append(Fundamental.download_fund(to_persian(ticker[i])))  
+           tickers_data.append(Fundamental(to_persian(ticker[i])).download_fund()) 
         return tickers_data
 
     # Wrong format
@@ -62,3 +62,4 @@ def update():
 
 def check():
     return Database().list()
+
