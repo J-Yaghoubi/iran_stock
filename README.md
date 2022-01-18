@@ -43,7 +43,7 @@ pip install iran_stock
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 data = tse.get('شبندر')
 ```
 
@@ -59,7 +59,7 @@ data = tse.get('شبندر')
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 tickers = ['شبندر', 'ملت', 'فملی']
 data = tse.get(tickers)
 ```
@@ -74,7 +74,7 @@ data = tse.get(tickers)
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 tickers = ['شبندر', 'ملت', 'فملی']
 data = tse.get(tickers, start='2018-01-20', end='2022-01-01')
 ```
@@ -98,7 +98,7 @@ data = tse.get(tickers, start='2018-01-20', end='2022-01-01')
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 data = tse.fund('شبندر')
 ```
 
@@ -113,7 +113,7 @@ data = tse.fund('شبندر')
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 tickers = ['شبندر', 'ملت', 'فملی']
 data = tse.fund(tickers)
 ```
@@ -168,7 +168,7 @@ print(data.nav)
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 tse.update()
 ```
 
@@ -184,9 +184,9 @@ tse.update()
 <div dir="ltr">
 
 ```python
-import ir_stock as tse
+import iran_stock as tse
 data = tse.check()
-print(db)
+print(data)
 ```
 
 <div>
