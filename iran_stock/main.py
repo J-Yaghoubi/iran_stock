@@ -7,11 +7,10 @@ from iran_stock.tools import to_persian
 from iran_stock.exceptions import InvalidFormat
 
 
-"""
-    Get historical price for one ticker or list of tickers
-"""
-
 def get(ticker, start='1980-01-01', end='2090-01-01'):
+    """
+        Get historical price for one ticker or list of tickers
+    """
 
     # String
     if isinstance(ticker, str):
@@ -28,11 +27,11 @@ def get(ticker, start='1980-01-01', end='2090-01-01'):
     else:
         raise InvalidFormat()
 
-"""
-    Get fundamenthal values for one ticker or list of tickers
-""" 
 
 def fund(ticker):
+    """
+        Get fundamenthal values for one ticker or list of tickers
+    """ 
 
     # String
     if isinstance(ticker, str):
@@ -49,17 +48,17 @@ def fund(ticker):
     else:
         raise InvalidFormat()
 
-"""
-    Update the database that holds the list of all available stocks
-"""
 
 def update():
+    """
+        Update the database that holds the list of all available stocks
+    """
     Database().update()
 
-"""
-    Read Database and return list of all available stock as Pandas-dataframe
-"""
 
 def check():
+    """
+        Read Database and return list of all available stock as Pandas-dataframe
+    """
     return Database().list()
 

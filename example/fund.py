@@ -21,16 +21,16 @@ print(data[1])
 
 # Get access to special parameter of fundamental values
 data = tse.fund('شبندر')
-print(data.title)
-print(data.group)
-print(data.evg_volume)
-print(data.eps)
-print(data.pe)
-print(data.sector_pe)
-print(data.base_volume)
-print(data.shares)
-print(data.nav)
-
-
-
-
+print(data.value.Ticker)
+print(data.value.Title)
+print(data.value.Market)
+print(data.value.Sector)
+print(data.value.EPS)
+print(data.value.PE)
+print(data.value.SectorPE)
+print(data.value.Shares)
+print(data.value.FloatingPercent)
+print(data.value.MarketCap)
+print(data.value.AverageVolume)
+print(data.value.BaseVolume)
+print(data.value.NAV)

@@ -29,18 +29,22 @@ class Symbol_OBJ:
 class Database:
     def __init__(self):
         self.database_patch = os.path.dirname(os.path.realpath(__file__)) + os.sep + 'database' + os.sep + 'db.pickle'
-    
-    # read Database if exists    
+
 
     def read_if_exists(self):
+        """ read Database if exists"""  
+
         with open(self.database_patch, 'rb') as f:
             data = pickle.load(f)  
         return data  
 
-    # read Database. 
-    # If it is not exists then grab data from tsetmc and make a database then read it    
 
     def read(self):
+        """
+          read Database. 
+          If it is not exists then grab data from tsetmc and make a database then read it 
+        """  
+
         try:
             data = self.read_if_exists()
         except:
@@ -49,9 +53,10 @@ class Database:
        
         return data    
 
-    # update Database   
+ 
 
     def update(self):
+        """ update Database"""
 
         # Check for internet connection
 
@@ -89,12 +94,12 @@ class Database:
             print('Database has been updated successfully...')     
 
         except:
-            raise TseError()         
+            raise TseError()    
 
-
-    # Search database for ticker-name and id
 
     def search(self, ticker):
+        """ Search database for ticker-name and id """
+
         id = ''
         en_ticker = ''
 
@@ -109,17 +114,17 @@ class Database:
         return  id, en_ticker  
 
 
-    # Read database and return list of all available stock as dataframe
 
     def list(self):
-
+        """ Read database and return list of all available stock as dataframe """
+        
         row = []
         data_table = Database().read()
 
         for i in range(len(data_table)):
             row.append([data_table[i].id, data_table[i].en_ticker, data_table[i].pr_ticker])
         
-        df = pd.DataFrame(data=row, columns=['ID', 'English Ticker', 'Persian Ticker'])
+        df = pd.DataFrame(data=row, columns=['ID', 'EnTicker', 'PrTicker'])
         return  df     
 
 
